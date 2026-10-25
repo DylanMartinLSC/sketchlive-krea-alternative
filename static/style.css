@@ -36,6 +36,14 @@ h1 { font-size: 18px; margin: 0; }
   font-size: 15px;
 }
 
+#model {
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+}
+
 .status { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 110px; text-align: right; }
 
 main {

@@ -107,6 +107,13 @@ function connect() {
   socket.onclose = () => { status.textContent = "reconnecting…"; setTimeout(connect, 1000); };
   socket.onmessage = (e) => {
     const msg = JSON.parse(e.data);
+    if (msg.loading) { status.textContent = `loading ${msg.loading}…`; return; }
+    if (msg.error) {
+      status.textContent = "error (see server log)";
+      console.error(msg.error);
+      inFlight = false;
+      return;
+    }
     output.src = msg.image;
     $("download").href = msg.image;
     status.textContent = `${msg.ms} ms · ${(1000 / Math.max(msg.ms, 1)).toFixed(1)} fps`;
@@ -129,9 +136,20 @@ function sendFrame() {
     image: canvas.toDataURL("image/png"),
     prompt: $("prompt").value,
     strength: parseFloat($("strength").value),
+    model: $("model").value,
     seed,
   }));
 }
 
+async function loadModels() {
+  const { default: def, models } = await (await fetch("/models")).json();
+  for (const m of models) {
+    const opt = new Option(m.label, m.id, m.id === def, m.id === def);
+    opt.title = `License: ${m.license}`;
+    $("model").append(opt);
+  }
+  $("model").addEventListener("change", requestFrame);
+}
+
 resetCanvas();
-connect();
+loadModels().then(connect);

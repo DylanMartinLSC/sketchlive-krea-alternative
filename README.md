@@ -29,11 +29,25 @@ Open http://127.0.0.1:7860. The first run downloads the model (~2.5 GB).
 
 No GPU? `python server.py --mock` serves the full UI with a fake generator, handy for frontend work (only `fastapi`, `uvicorn` and `pillow` are needed).
 
+### Models
+
+Pick a model from the dropdown in the header; it loads on first use (the two most recent stay on the GPU, so switching back is instant). Timings are GPU time per 512px frame on an RTX 3090 with TAESD.
+
+| Preset | Model | ms/frame | Weights license |
+|---|---|---|---|
+| `sd-turbo` (default) | [stabilityai/sd-turbo](https://huggingface.co/stabilityai/sd-turbo), 1 step | ~55 | Stability AI Community |
+| `sdxs` | [IDKiro/sdxs-512-0.9](https://huggingface.co/IDKiro/sdxs-512-0.9), 1 step | ~37 | OpenRAIL++ |
+| `dreamshaper` | [Lykon/dreamshaper-8](https://huggingface.co/Lykon/dreamshaper-8) + LCM-LoRA, 2 steps | ~85 | CreativeML OpenRAIL-M |
+| `realistic` | [Realistic Vision 5.1](https://huggingface.co/SG161222/Realistic_Vision_V5.1_noVAE) + LCM-LoRA, 2 steps | ~95 | CreativeML OpenRAIL-M |
+| `anime` | [Lykon/AnyLoRA](https://huggingface.co/Lykon/AnyLoRA) + LCM-LoRA, 2 steps | ~83 | CreativeML OpenRAIL-M |
+
+SDXS is the fastest but was distilled for one step from pure noise, so it looks washed out below ~0.85 Creativity. Any SD 1.5 fine-tune can be added as an LCM preset in `PRESETS` in `server.py`.
+
 ### Options
 
 | Flag | Default | |
 |---|---|---|
-| `--model` | `stabilityai/sd-turbo` | Any diffusers img2img checkpoint; also `SKETCHLIVE_MODEL` env var |
+| `--model` | `sd-turbo` | Preset loaded at startup (see above); also `SKETCHLIVE_MODEL` env var |
 | `--full-vae` | off | Use the model's full VAE instead of TAESD: sharper, ~3x slower (~158 ms/frame on a 3090) |
 | `--compile` | off | `torch.compile` the UNet: slow first start, noticeably faster frames |
 | `--device` | `cuda` | `mps` works on Apple Silicon (slower) |
@@ -41,10 +55,11 @@ No GPU? `python server.py --mock` serves the full UI with a fake generator, hand
 
 ## Model licenses
 
-The code is MIT. Model weights carry their own licenses: `stabilityai/sd-turbo` and `sdxl-turbo` are under Stability AI's community license (check its commercial-use terms). For a permissive stack, point `--model` at an LCM checkpoint such as `SimianLuo/LCM_Dreamshaper_v7` and verify its license on its model card.
+The code is MIT. Model weights carry their own licenses (table above): SD-Turbo is under Stability AI's community license (check its commercial-use terms); the other presets use OpenRAIL-family licenses, which allow commercial use with use-based restrictions. Verify on each model card.
 
 ## Roadmap ideas
 
+- pix2pix-turbo sketch mode for clean line drawings
 - ControlNet scribble/lineart conditioning for tighter line adherence
 - StreamDiffusion / TensorRT backend for 30+ fps
 - Layers, image upload as background, webcam/screen input
