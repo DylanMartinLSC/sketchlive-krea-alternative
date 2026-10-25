@@ -14,33 +14,59 @@
     <select id="model" title="Model"></select>
     <span id="status" class="status">connecting…</span>
   </header>
+  <div id="styles" class="styles" title="Style added to the end of your prompt"></div>
 
   <main>
     <section class="pane">
       <div class="toolbar">
         <input id="color" type="color" value="#1e3a8a" title="Brush color">
         <div id="swatches"></div>
-        <label>Size <input id="size" type="range" min="2" max="80" value="14"></label>
+      </div>
+      <div class="toolbar">
         <button id="brush" class="active" title="Brush (B)">Brush</button>
         <button id="eraser" title="Eraser (E)">Eraser</button>
-        <button id="fill" title="Fill canvas with current color">Fill</button>
-        <button id="undo" title="Undo (Ctrl+Z)">Undo</button>
-        <button id="clear">Clear</button>
+        <button id="picker" title="Eyedropper (I, or Alt+click)">Pick</button>
+        <label title="Brush size ([ and ])">Size <input id="size" type="range" min="2" max="120" value="14"></label>
+        <label title="Brush opacity">Opacity <input id="opacity" type="range" min="0.05" max="1" step="0.05" value="1"></label>
       </div>
-      <canvas id="sketch" width="512" height="512"></canvas>
+      <div class="stage" id="sketch-stage">
+        <canvas id="sketch" width="1024" height="1024"></canvas>
+        <canvas id="stroke" width="1024" height="1024"></canvas>
+        <div id="cursor"></div>
+      </div>
+      <div class="toolbar">
+        <button id="undo" title="Undo (Ctrl+Z)">Undo</button>
+        <button id="redo" title="Redo (Ctrl+Shift+Z)">Redo</button>
+        <button id="fill" title="Fill canvas with current color">Fill</button>
+        <button id="clear">Clear</button>
+        <span class="hint">Paste or drop an image to draw over it</span>
+      </div>
     </section>
 
     <section class="pane">
       <div class="toolbar">
         <label title="How far the model may stray from your sketch">Creativity
           <input id="strength" type="range" min="0.2" max="0.95" step="0.05" value="0.75"></label>
+        <label title="Same seed + same sketch = same image">Seed
+          <input id="seed" type="number" min="0" max="2147483647"></label>
         <button id="reseed" title="New random seed">Reroll</button>
+      </div>
+      <div class="toolbar">
+        <button id="enhance" class="primary" title="Re-render this frame at higher quality (Ctrl+Enter)">Enhance</button>
         <button id="swap" title="Copy result onto the canvas and keep drawing">Use as sketch</button>
         <a id="download" download="sketchlive.jpg"><button>Save</button></a>
       </div>
-      <img id="output" width="512" height="512" alt="Generated image">
+      <div class="stage">
+        <img id="output" width="512" height="512" alt="Generated image">
+        <div id="loading" hidden><div class="spinner"></div><span id="loading-text">Loading…</span></div>
+      </div>
+      <div class="toolbar"><span class="hint">Alt+click the result to pick a color from it</span></div>
     </section>
   </main>
+
+  <footer>
+    <div id="history" class="history" title="Recent results, saved when you pause; click to view"></div>
+  </footer>
 
   <script src="/static/app.js"></script>
 </body>

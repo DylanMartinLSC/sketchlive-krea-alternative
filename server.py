@@ -34,8 +34,8 @@ class MockGenerator:
     default_model = "sd-turbo"
     pipes = property(lambda self: PRESETS)  # every preset counts as loaded
 
-    def __call__(self, image, prompt, strength, seed, model=None):
-        time.sleep(0.05)
+    def __call__(self, image, prompt, strength, seed, model=None, enhance=False):
+        time.sleep(0.5 if enhance else 0.05)
         img = image.filter(ImageFilter.GaussianBlur(6 * strength))
         return ImageOps.posterize(ImageOps.autocontrast(img), 3)
 
@@ -57,6 +57,7 @@ PRESETS = {
 }
 LCM_LORA = "latent-consistency/lcm-lora-sdv1-5"
 LCM_STEPS = 2
+ENHANCE_STEPS = {"lcm": 4, "turbo": 2, "sdxs": 1}
 MAX_LOADED = 2  # pipelines kept on the GPU; older ones are evicted
 
 
@@ -103,6 +104,7 @@ class DiffusionGenerator:
             pipe.vae = AutoencoderTiny.from_pretrained("madebyollin/taesd", torch_dtype=self.dtype)
         pipe.to(self.device)
         pipe.set_progress_bar_config(disable=True)
+        pipe.fast_vae, pipe.full_vae = pipe.vae, None
         if self.compile_unet:
             pipe.unet = self.torch.compile(pipe.unet, mode="max-autotune", fullgraph=True)
         self.pipes[model] = pipe
@@ -114,30 +116,45 @@ class DiffusionGenerator:
             raise
         return pipe
 
-    def __call__(self, image, prompt, strength, seed, model=None):
+    def full_vae(self, model, pipe):
+        """The model's own full-size VAE, loaded on first use by Enhance."""
+        if pipe.full_vae is None:
+            from diffusers import AutoencoderKL
+
+            subfolder = "vae_large" if PRESETS[model]["kind"] == "sdxs" else "vae"
+            pipe.full_vae = AutoencoderKL.from_pretrained(
+                PRESETS[model]["repo"], subfolder=subfolder, torch_dtype=self.dtype
+            ).to(self.device)
+        return pipe.full_vae
+
+    def __call__(self, image, prompt, strength, seed, model=None, enhance=False):
         model = model if model in PRESETS else self.default_model
         pipe = self.load(model)
+        kind = PRESETS[model]["kind"]
         # diffusers maps `strength` onto a whole number of scheduler steps, which for
         # 1-step models collapses most of the range onto t=499. Instead, pass explicit
         # timesteps so the noise level tracks the slider continuously.
         t = min(999, max(1, round(1000 * strength) - 1))
-        if PRESETS[model]["kind"] == "lcm":
+        steps = ENHANCE_STEPS[kind] if enhance else (LCM_STEPS if kind == "lcm" else 1)
+        timesteps = sorted({max(1, round(t * (steps - i) / steps)) for i in range(steps)}, reverse=True)
+        if kind == "lcm":
             # LCM only accepts timesteps from its 50-step training grid (19, 39, ... 999).
-            grid = lambda x: min(999, max(19, 20 * round((x + 1) / 20) - 1))
-            timesteps = sorted({grid(t * (LCM_STEPS - i) / LCM_STEPS) for i in range(LCM_STEPS)}, reverse=True)
-            guidance = 1.0
-        else:
-            timesteps, guidance = [t], 0.0
+            timesteps = sorted({min(999, max(19, 20 * round((x + 1) / 20) - 1)) for x in timesteps}, reverse=True)
+        # Enhance swaps in the full VAE for sharper detail; live frames use the fast one.
+        pipe.vae = self.full_vae(model, pipe) if enhance else pipe.fast_vae
         generator = self.torch.Generator(self.device).manual_seed(seed)
-        with self.torch.inference_mode():
-            return pipe(
-                prompt=prompt,
-                image=image,
-                strength=1.0,
-                timesteps=timesteps,
-                guidance_scale=guidance,
-                generator=generator,
-            ).images[0]
+        try:
+            with self.torch.inference_mode():
+                return pipe(
+                    prompt=prompt,
+                    image=image,
+                    strength=1.0,
+                    timesteps=timesteps,
+                    guidance_scale=1.0 if kind == "lcm" else 0.0,
+                    generator=generator,
+                ).images[0]
+        finally:
+            pipe.vae = pipe.fast_vae
 
 
 def decode_image(data_url):
@@ -148,9 +165,9 @@ def decode_image(data_url):
     return Image.alpha_composite(bg, img).convert("RGB").resize((SIZE, SIZE))
 
 
-def encode_image(img):
+def encode_image(img, quality):
     buf = io.BytesIO()
-    img.save(buf, format="JPEG", quality=90)
+    img.save(buf, format="JPEG", quality=quality)
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
@@ -211,13 +228,15 @@ def create_app(generator):
                             float(msg.get("strength", 0.75)),
                             int(msg.get("seed", 0)),
                             model,
+                            bool(msg.get("enhance")),
                         )
                 except Exception as e:
                     await socket.send_text(json.dumps({"id": msg.get("id"), "error": f"{type(e).__name__}: {e}"}))
                     continue
                 await socket.send_text(json.dumps({
                     "id": msg.get("id"),
-                    "image": encode_image(result),
+                    "image": encode_image(result, quality=95 if msg.get("enhance") else 85),
+                    "enhanced": bool(msg.get("enhance")),
                     "ms": round((time.perf_counter() - started) * 1000),
                 }))
         except (WebSocketDisconnect, RuntimeError):

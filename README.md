@@ -15,6 +15,28 @@ browser canvas ──PNG frame──▶ WebSocket ──▶ img2img (SD-Turbo, 1
 - **Fixed seed.** The seed stays constant between frames so the picture evolves smoothly instead of flickering. *Reroll* picks a new one.
 - **Backpressure.** The client keeps at most one frame in flight and the server only processes the newest frame, so latency never piles up while you draw fast.
 
+## Features
+
+- **Live canvas**: brush with pen pressure, eraser, opacity, eyedropper, fill, undo/redo, size cursor
+- **Paste or drop an image** onto the canvas to paint over a photo or reference
+- **Style chips** (Photo, Watercolor, Anime, 3D render, …) appended to your prompt
+- **Model dropdown** with five presets (see below)
+- **Enhance**: re-renders the current frame with more steps and the model's full VAE
+- **History strip**: results are saved when you pause; click one to bring it back
+- **Fixed, editable seed** for reproducible results; settings are remembered between visits
+- Side-by-side layout that scales up to large monitors and stacks on phones
+
+### Shortcuts
+
+| Key | Action |
+|---|---|
+| `B` / `E` / `I` | Brush / eraser / eyedropper |
+| `Alt`+click | Pick a color from the canvas or the result |
+| `[` / `]` | Smaller / bigger brush |
+| `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
+| `Ctrl+Enter` | Enhance |
+| `Ctrl+V` | Paste an image onto the canvas |
+
 ## Run it
 
 ```bash
@@ -62,5 +84,4 @@ The code is MIT. Model weights carry their own licenses (table above): SD-Turbo 
 - pix2pix-turbo sketch mode for clean line drawings
 - ControlNet scribble/lineart conditioning for tighter line adherence
 - StreamDiffusion / TensorRT backend for 30+ fps
-- Layers, image upload as background, webcam/screen input
-- Style presets and prompt history
+- Layers, webcam/screen input
