@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SketchLive</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>SketchLive</h1>
+    <input id="prompt" type="text" placeholder="Describe what you're drawing…"
+           value="a cozy cabin by a lake at sunset, digital painting">
+    <span id="status" class="status">connecting…</span>
+  </header>
+
+  <main>
+    <section class="pane">
+      <div class="toolbar">
+        <input id="color" type="color" value="#1e3a8a" title="Brush color">
+        <div id="swatches"></div>
+        <label>Size <input id="size" type="range" min="2" max="80" value="14"></label>
+        <button id="brush" class="active" title="Brush (B)">Brush</button>
+        <button id="eraser" title="Eraser (E)">Eraser</button>
+        <button id="fill" title="Fill canvas with current color">Fill</button>
+        <button id="undo" title="Undo (Ctrl+Z)">Undo</button>
+        <button id="clear">Clear</button>
+      </div>
+      <canvas id="sketch" width="512" height="512"></canvas>
+    </section>
+
+    <section class="pane">
+      <div class="toolbar">
+        <label title="How far the model may stray from your sketch">Creativity
+          <input id="strength" type="range" min="0.2" max="0.95" step="0.05" value="0.75"></label>
+        <button id="reseed" title="New random seed">Reroll</button>
+        <button id="swap" title="Copy result onto the canvas and keep drawing">Use as sketch</button>
+        <a id="download" download="sketchlive.jpg"><button>Save</button></a>
+      </div>
+      <img id="output" width="512" height="512" alt="Generated image">
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
