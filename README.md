@@ -1,5 +1,9 @@
 # SketchLive: an open-source Krea real-time alternative
 
+![SketchLive demo: drawing a mountain landscape with a live side-by-side preview, undo/redo, and Enhance](docs/demo.gif)
+
+*UI demonstration recorded with `python server.py --mock`: sketching, live preview, undo/redo, and Enhance/history. Mock mode uses a simple image filter; this is not diffusion-model output.*
+
 An open-source, self-hosted take on real-time AI drawing, inspired by Krea's real-time canvas: sketch on the left, and a diffusion model repaints your sketch on the right as you draw, guided by a text prompt. Runs locally on your own GPU.
 
 > **Not affiliated with Krea.** SketchLive is an independent community project. It is not made, endorsed or supported by Krea AI; "Krea" is used only to describe what kind of tool this is.
