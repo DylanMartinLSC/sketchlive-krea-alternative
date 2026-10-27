@@ -8,6 +8,22 @@ An open-source, self-hosted take on real-time AI drawing, inspired by Krea's rea
 
 > **Not affiliated with Krea.** SketchLive is an independent community project. It is not made, endorsed or supported by Krea AI; "Krea" is used only to describe what kind of tool this is.
 
+## More examples
+
+### Friendly robot
+
+![SketchLive demo: a simple orange robot sketch becomes a detailed 3D character with glowing eyes and articulated hands](docs/demo-robot.gif)
+
+*Prompt: "a friendly orange robot, glowing cyan eyes, worn metal, cinematic studio lighting, detailed 3d render".*
+
+### Stormy lighthouse
+
+![SketchLive demo: a rough lighthouse sketch becomes a dramatic coastal scene with crashing waves and storm clouds](docs/demo-lighthouse.gif)
+
+*Prompt: "a lighthouse on a rocky island, stormy teal ocean, golden beacon, dramatic clouds, cinematic detailed painting".*
+
+Both examples use real SD-Turbo output on an RTX 3090, with Cinematic style, Creativity 0.90, and seed 42. Each recording shows sketching, live generation, undo/redo, and Enhance.
+
 ## How it works
 
 ```
