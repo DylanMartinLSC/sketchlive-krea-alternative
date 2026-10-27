@@ -1,0 +1,13 @@
+plugins { id 'java-library' }
+java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+dependencies {
+    compileOnly 'com.microsoft.onnxruntime:onnxruntime:1.24.3'
+    implementation 'com.google.code.gson:gson:2.11.0'
+    testImplementation 'com.microsoft.onnxruntime:onnxruntime:1.24.3'
+    testImplementation 'junit:junit:4.13.2'
+}
+test {
+    maxHeapSize = '10g'
+    systemProperty 'modelDir', System.getProperty('modelDir', '')
+    systemProperty 'assetsDir', file('../app/src/main/assets').absolutePath
+}

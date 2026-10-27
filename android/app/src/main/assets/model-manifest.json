@@ -1,0 +1,72 @@
+{
+  "id": "sd-turbo-taesd-v1",
+  "schema": 1,
+  "resolutions": [
+    384,
+    512
+  ],
+  "sigma": {
+    "499": 1.6128870248794556,
+    "699": 3.321084499359131
+  },
+  "files": [
+    {
+      "name": "text_encoder.onnx",
+      "size": 283405,
+      "sha256": "26fab88d6a89c192d9a78acd9a2049965a4a10095a91703b02131cfaffa11d9a"
+    },
+    {
+      "name": "text_encoder.data",
+      "size": 680775680,
+      "sha256": "37dbb9bc1a0d6e1d77197ca275bb5a88e1baec2879570ccfb42800e4ea7cb347"
+    },
+    {
+      "name": "unet.data",
+      "size": 1731755520,
+      "sha256": "e9d455aafd1941766b6e226c208eb9a98acaaddf1497248ee22a95e404d7d344"
+    },
+    {
+      "name": "encoder.data",
+      "size": 2441088,
+      "sha256": "623d1ddf076010d07270762910ccc0f40006c26542df311b67a9814047674e49"
+    },
+    {
+      "name": "decoder.data",
+      "size": 2441088,
+      "sha256": "67e1bcd20f0967d45e95d7abfa12fb54f74ea90bf40561f55a01592bd9b5ce43"
+    },
+    {
+      "name": "unet_384.onnx",
+      "size": 795229,
+      "sha256": "e2eb0148c126344d8724f0adfdcf91da909d37475a5c3b8785a2364ae2d096da"
+    },
+    {
+      "name": "unet_512.onnx",
+      "size": 795229,
+      "sha256": "d7e9916d39e0a574b444bd559fbfb99809b61c35e80fdb49042439d7440ef872"
+    },
+    {
+      "name": "encoder_384.onnx",
+      "size": 26619,
+      "sha256": "deb4966ce82887cf218b880384265e5e38707674b3bf9f2a0da4d93c9b0384b7"
+    },
+    {
+      "name": "encoder_512.onnx",
+      "size": 26619,
+      "sha256": "70350d16b44cc545dfc2d2671f782be1c9c254352b022759b1fc723bbbfc6e6a"
+    },
+    {
+      "name": "decoder_384.onnx",
+      "size": 28480,
+      "sha256": "121bf639811d44b1730cbbb902ae29d8cfd73beeddfb5832ffee9c4304b19308"
+    },
+    {
+      "name": "decoder_512.onnx",
+      "size": 28480,
+      "sha256": "6418ddc628459a0ae6f934e9440ed6123ab3f0a3581dd1b009500ef09eeac1a6"
+    }
+  ],
+  "source_revision": "b261bac6fd2cf515557d5d0707481eafa0485ec2",
+  "tiny_vae_revision": "614f76814bbe30edbe2e627ace1c2234c81a2c0e",
+  "note": "FP16 static graphs / FP32 float I/O; text encoder CPU, other models selectable strict QNN HTP or CPU; actual QNN execution requires device verification."
+}
