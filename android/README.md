@@ -1,5 +1,7 @@
 # SketchLive for Android
 
+**Android development now has its own repository: [sketchlive-android](https://github.com/DylanMartinLSC/sketchlive-android).** Visit it for the APK, example GIFs, setup, and current source. This folder preserves the original Android implementation.
+
 A standalone, free Android sketch-to-image app. It runs real SD-Turbo image-to-image inference on the phone with ONNX Runtime, without a desktop server, account, subscription, or paid API. The desktop app remains available in the repository root.
 
 [Download the installable preview APK](https://github.com/DylanMartinLSC/sketchlive-krea-alternative/releases/tag/android-v0.1.0).

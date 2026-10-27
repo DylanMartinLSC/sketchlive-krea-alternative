@@ -10,7 +10,7 @@ An open-source, self-hosted take on real-time AI drawing, inspired by Krea's rea
 
 ## Android: free, on-device generation
 
-[**Download the Android APK**](https://github.com/DylanMartinLSC/sketchlive-krea-alternative/releases/tag/android-v0.1.0) · [Setup, source, and build instructions](android/README.md)
+[**Download the Android APK**](https://github.com/DylanMartinLSC/sketchlive-android/releases/tag/v0.1.0) · [Android repository, example GIFs, and setup](https://github.com/DylanMartinLSC/sketchlive-android)
 
 The standalone Android app runs real sketch-to-image diffusion on your phone: no desktop server, account, subscription, or paid API. Download the model once (~2.42 GB), then generate offline. Includes drawing, undo/redo, image import, prompts/styles, Creativity, fixed seeds, live updates, two-step Enhance, history, and PNG save/share.
 
