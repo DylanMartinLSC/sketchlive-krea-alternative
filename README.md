@@ -1,8 +1,8 @@
 # SketchLive: an open-source Krea real-time alternative
 
-![SketchLive demo: drawing a mountain landscape with a live side-by-side preview, undo/redo, and Enhance](docs/demo.gif)
+![SketchLive demo: turning a rough mushroom cottage sketch into a detailed fantasy scene with a live AI preview, undo/redo, and Enhance](docs/demo.gif)
 
-*Recorded with the real SD-Turbo model on an RTX 3090: sketching, live AI preview, undo/redo, and Enhance/history. Photo style, Creativity 0.90, seed 42; generated results are shown directly from the app.*
+*Recorded with the real SD-Turbo model on an RTX 3090: sketching a mushroom cottage, live AI preview, undo/redo, and Enhance/history. Cinematic style, Creativity 0.90, seed 42; generated results are shown directly from the app.*
 
 An open-source, self-hosted take on real-time AI drawing, inspired by Krea's real-time canvas: sketch on the left, and a diffusion model repaints your sketch on the right as you draw, guided by a text prompt. Runs locally on your own GPU.
 
