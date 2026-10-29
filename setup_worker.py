@@ -9,12 +9,18 @@ from huggingface_hub import snapshot_download
 class DownloadProgress(tqdm):
     def __init__(self, *args, **kwargs):
         self.last_emit = 0
+        # tqdm omits display attributes when stderr is not a terminal.
+        self.byte_unit = kwargs.get('unit')
+        self.byte_total = kwargs.get('total')
+        self.byte_done = kwargs.get('initial', 0)
+        self.byte_name = kwargs.get('desc', 'Model download')
         super().__init__(*args, **kwargs)
 
     def update(self, amount=1):
         result = super().update(amount)
-        if self.unit == 'B' and self.total and time.monotonic() - self.last_emit > .1:
-            print('@progress ' + json.dumps({'name': self.desc, 'done': self.n, 'total': self.total}), flush=True)
+        self.byte_done += amount
+        if self.byte_unit == 'B' and self.byte_total and time.monotonic() - self.last_emit > .1:
+            print('@progress ' + json.dumps({'name': self.byte_name, 'done': self.byte_done, 'total': self.byte_total}), flush=True)
             self.last_emit = time.monotonic()
         return result
 
