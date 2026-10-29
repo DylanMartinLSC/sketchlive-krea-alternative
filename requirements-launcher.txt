@@ -1,0 +1,11 @@
+# Known compatible CUDA environment for the portable launcher (Python 3.11).
+torch==2.5.1
+torchvision==0.20.1
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+pillow==11.1.0
+diffusers==0.35.2
+transformers==4.49.0
+accelerate==1.6.0
+peft==0.15.2
+huggingface_hub==0.36.2

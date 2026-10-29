@@ -6,3 +6,11 @@ android/local.properties
 android/**/build/
 *.jks
 *.keystore
+
+# Portable build outputs
+build/
+dist/
+release/
+*.spec
+*.egg-info/
+.demo-recording/

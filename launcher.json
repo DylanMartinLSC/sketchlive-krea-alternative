@@ -1,0 +1,15 @@
+{
+  "id": "SketchLive",
+  "name": "SketchLive",
+  "port": 7860,
+  "trellis": "",
+  "torch": [
+    "torch==2.5.1",
+    "torchvision==0.20.1"
+  ],
+  "torch_index": "https://download.pytorch.org/whl/cu124",
+  "models": [
+    "stabilityai/sd-turbo",
+    "madebyollin/taesd"
+  ]
+}
