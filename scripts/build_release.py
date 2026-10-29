@@ -1,5 +1,9 @@
-from release_common import *
+import importlib.metadata
 import json
+import shutil
+import urllib.request
+import zipfile
+from release_common import ROOT, freeze, launch_check, archive
 config = json.loads((ROOT / 'launcher.json').read_text())
 # uv is pinned by the workflow; its license is shipped with the launcher.
 uv = Path(shutil.which('uv'))
@@ -21,7 +25,6 @@ if config['trellis']:
     urllib.request.urlretrieve('https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.4/MinGit-2.56.0.4-64-bit.zip', download)
     with zipfile.ZipFile(download) as z:
         z.extractall(folder / '_internal' / 'git')
-import importlib.metadata
 uv_dist = importlib.metadata.distribution('uv')
 licenses = folder / '_internal' / 'licenses' / 'uv'
 licenses.mkdir(parents=True, exist_ok=True)
