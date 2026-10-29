@@ -2,8 +2,9 @@
 
 Sketch a few shapes and watch a local diffusion model repaint them as you draw.
 
-<!-- TODO: Record the real app using media/GIF_SHOTLIST.md and drop the file at media/demo.gif. -->
 ![SketchLive demo](media/demo.gif)
+
+<sub>Actual RTX 3090 run; playback condensed. [Recording details](media/DEMO.md).</sub>
 
 [![Download for Windows](https://img.shields.io/badge/Download_for_Windows-download-238636)](https://github.com/DylanMartinLSC/sketchlive-krea-alternative/releases/latest/download/sketchlive-windows.zip)
 
