@@ -1,4 +1,17 @@
-# SketchLive: an open-source Krea real-time alternative
+# SketchLive
+
+Sketch a few shapes and watch a local diffusion model repaint them as you draw.
+
+![SketchLive demo](media/demo.gif)
+
+<sub>Actual RTX 3090 run; playback condensed. [Recording details](media/DEMO.md).</sub>
+
+[![Download for Windows](https://img.shields.io/badge/Download_for_Windows-download-238636)](https://github.com/DylanMartinLSC/sketchlive-krea-alternative/releases/latest/download/sketchlive-windows.zip)
+
+Windows builds are unsigned: if SmartScreen appears, choose **More info → Run anyway**.
+
+Extract the whole ZIP, then run the EXE. First run installs Python/CUDA packages and downloads models with progress; allow internet access, substantial free disk space and a compatible NVIDIA GPU/driver. Keep the launcher open while using the local browser UI. See [portable setup](docs/PORTABLE.md).
+
 
 ![SketchLive demo: turning a rough mushroom cottage sketch into a detailed fantasy scene with a live AI preview, undo/redo, and Enhance](docs/demo.gif)
 
